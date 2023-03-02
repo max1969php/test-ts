@@ -83,6 +83,17 @@ db.query(
   )
 });
 
+/* GET todo listing. */
+router.get('/completedTodo', function(req, res, next) {
+db.query(
+    'SELECT * FROM `todo` where completed=1',
+    function(err, results, fields) {
+     // console.log(results); // results contains rows returned by server
+      //console.log(fields); // fields contains extra meta data about results, if available
+  res.status(200).send({ results });
+    }
+  )
+});
 /* GET single user. */
 router.get('/users/:id', function(req, res, next) {
    // console.log(req.params.id)
