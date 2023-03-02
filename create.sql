@@ -1,0 +1,32 @@
+/*CREATE DATABASE*/
+CREATE DATABASE  `test`,
+
+/* CREATE TABLE USERS */ 
+CREATE TABLE `users` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+	`email` VARCHAR(100) NULL DEFAULT NULL COLLATE 'utf8mb4_general_ci',
+	`createdAt` DATETIME NOT NULL DEFAULT curdate(),
+	`updatedAt` DATETIME NOT NULL DEFAULT curdate(),
+	PRIMARY KEY (`id`) USING BTREE
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB
+;
+
+/* CREATE TABLE TODO */
+CREATE TABLE `todo` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`userID` INT(11) NOT NULL,
+	`title` VARCHAR(100) NOT NULL DEFAULT '' COLLATE 'utf8mb4_general_ci',
+	`text` TEXT NOT NULL COLLATE 'utf8mb4_general_ci',
+	`completed` TINYINT(1) NOT NULL DEFAULT '0',
+	`createdAt` DATETIME NOT NULL DEFAULT curdate(),
+	`updatedAt` DATETIME NOT NULL DEFAULT curdate(),
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `FK1_userID_use.id` (`userID`) USING BTREE,
+	CONSTRAINT `FK1_userID_use.id` FOREIGN KEY (`userID`) REFERENCES `users` (`id`) ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+COLLATE='utf8mb4_general_ci'
+ENGINE=InnoDB
+;

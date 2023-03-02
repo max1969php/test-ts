@@ -1,0 +1,43 @@
+<form action="http://localhost:3001/db/newTodo" method="post">
+    <label for="userID">userID</label>
+    <input type="text" name="userID" id="userID">
+    <label for="title">title</label>
+    <input type="text" name="title" id="title">
+    <label for="text">text</label>
+    <input type="text" name="text" id="text">
+    <button type="submit">novo todo</button>
+</form>
+
+<form action="http://localhost:3001/db/updateTodo" method="post">
+    <label for="id">id</label>
+    <input type="text" name="id" id="id">
+    <label for="title">title</label>
+    <input type="text" name="title" id="title">
+    <label for="text">text</label>
+    <input type="text" name="text" id="text">
+    <button type="submit">update todo</button>
+</form>
+
+<form action="http://localhost:3001/db/deleteTodo/9" method="get">
+    <button type="submit">DELETE TODO BY ID</button>
+</form>
+
+<form action="http://localhost:3001/db/todo" method="get">
+    <button type="submit">get all todo</button>
+</form>
+
+<form action="http://localhost:3001/db/todo/810" method="get">
+    <button type="submit">get single todo by id</button>
+</form>
+
+<form action="http://localhost:3001/db/todoByUser/2" method="get">
+    <button type="submit">get  todo by user id</button>
+</form>
+
+<form action="http://localhost:3001/db/users" method="get">
+    <button type="submit">get all users</button>
+</form>
+
+<form action="http://localhost:3001/db/users/2" method="get">
+    <button type="submit">get user by id</button>
+</form>
