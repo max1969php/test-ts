@@ -6,14 +6,15 @@ import { Users } from "./../types";
 import { Todo } from "./../types";
 const users: Users[] = [];
 const todo: Todo[] = [];
+const fs = require('fs');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
-/* POST new todo. */
-router.post('/newTodo', function(req, res, next) {
+/* POST new todos. */
+router.post('/newTodos', function(req, res, next) {
 // simple query
 db.query(
-  'INSERT INTO `todo`(userID, title, text,createdAt, updatedAt) VALUES (?,?,?, NOW(),NOW())',
+  'INSERT INTO `todos`(userID, title, text,createdAt, updatedAt) VALUES (?,?,?, NOW(),NOW())',
   [req.body.userID,req.body.title,req.body.text],
      function(err, results, fields) {
      // console.log(results); // results contains rows returned by server
@@ -24,11 +25,11 @@ db.query(
   )
 });
 
-/* UPDATE todo. */
-router.post('/updateTodo', function(req, res, next) {
+/* UPDATE todos. */
+router.post('/updateTodos', function(req, res, next) {
 // simple query
 db.query(
-  'UPDATE `todo` SET title=?, text=?, updatedAt=NOW() WHERE id=?',
+  'UPDATE `todos` SET title=?, text=?, updatedAt=NOW() WHERE id=?',
   [req.body.title,req.body.text,req.body.id],
      function(err, results, fields) {
      // console.log(results); // results contains rows returned by server
@@ -39,12 +40,12 @@ db.query(
   )
 });
 
-/* DELETE todo by id. */
-router.get('/deleteTodo/:id', function(req, res, next) {
+/* DELETE todos by id. */
+router.get('/deleteTodos/:id', function(req, res, next) {
  // console.log(req.params.id)
 // simple query
 db.query(
-    'DELETE FROM `todo` WHERE `id` =?',
+    'DELETE FROM `todos` WHERE `id` =?',
     [req.params.id],
     function(err, results, fields) {
      // console.log(results); // results contains rows returned by server
@@ -69,12 +70,28 @@ db.query(
   )
 });
 
-/* GET todo listing. */
-router.get('/todo', function(req, res, next) {
+/* GET todos listing. */
+router.get('/todos', function(req, res, next) {
 // simple query
-console.log('todo')
+console.log('todos')
 db.query(
-    'SELECT * FROM `todo`',
+    'SELECT id,userID,title,text,completed FROM `todos`',
+    function(err, results, fields) {
+     // console.log(results); // results contains rows returned by server
+      //console.log(fields); // fields contains extra meta data about results, if available
+  res.status(200).send({ results });
+    }
+  )
+});/* GET todos listing where there is searched text. */
+router.get('/textTodos/:text/:completed', function(req, res, next) {
+// simple query
+let placeholder='%'+req.params.text+'%';
+let completed=0
+if((req.params.completed)=='todos') {completed=0}else{completed=1}
+console.log(req.params.completed,completed)
+db.query(
+    'SELECT id,userID,title,text,completed FROM `todos` WHERE `title` LIKE ? AND `completed`>=?',
+    [placeholder,completed],
     function(err, results, fields) {
      // console.log(results); // results contains rows returned by server
       //console.log(fields); // fields contains extra meta data about results, if available
@@ -83,10 +100,10 @@ db.query(
   )
 });
 
-/* GET todo listing. */
-router.get('/completedTodo', function(req, res, next) {
+/* GET todos listing. */
+router.get('/completedTodos', function(req, res, next) {
 db.query(
-    'SELECT * FROM `todo` where completed=1',
+    'SELECT id,userID,title,text,completed FROM `todos` where completed=1',
     function(err, results, fields) {
      // console.log(results); // results contains rows returned by server
       //console.log(fields); // fields contains extra meta data about results, if available
@@ -109,12 +126,12 @@ db.query(
   )
 });
 
-/* GET todo by user id. */
-router.get('/todoByUser/:id', function(req, res, next) {
+/* GET todos by user id. */
+router.get('/todosByUser/:id', function(req, res, next) {
    // console.log(req.params.id)
 // simple query
 db.query(
-    'SELECT * FROM `todo` WHERE `userID` =?',
+    'SELECT * FROM `todos` WHERE `userID` =?',
     [req.params.id],
     function(err, results, fields) {
      // console.log(results); // results contains rows returned by server
@@ -125,12 +142,12 @@ db.query(
   )
 });
 
-/* GET single todo by id. */
-router.get('/todo/:id', function(req, res, next) {
+/* GET single todos by id. */
+router.get('/todos/:id', function(req, res, next) {
    // console.log(req.params.id)
 // simple query
 db.query(
-    'SELECT * FROM `todo` WHERE `id` =?',
+    'SELECT * FROM `todos` WHERE `id` =?',
     [req.params.id],
     function(err, results, fields) {
      // console.log(results); // results contains rows returned by server

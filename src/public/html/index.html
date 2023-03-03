@@ -1,43 +1,43 @@
-<form action="http://localhost:3001/db/newTodo" method="post">
+<form action="http://localhost:3001/db/newTodos" method="post">
     <label for="userID">userID</label>
     <input type="text" name="userID" id="userID">
     <label for="title">title</label>
     <input type="text" name="title" id="title">
     <label for="text">text</label>
     <input type="text" name="text" id="text">
-    <button type="submit">novo todo</button>
+    <button type="submit">novo todos</button>
 </form>
 
-<form action="http://localhost:3001/db/updateTodo" method="post">
+<form action="http://localhost:3001/db/updateTodos" method="post">
     <label for="id">id</label>
     <input type="text" name="id" id="id">
     <label for="title">title</label>
     <input type="text" name="title" id="title">
     <label for="text">text</label>
     <input type="text" name="text" id="text">
-    <button type="submit">update todo</button>
+    <button type="submit">update todos</button>
 </form>
 <label for="">id hardcoded in file index.html</label>
-<form action="http://localhost:3001/db/deleteTodo/9" method="get">
-    <button type="submit">delete todo by id</button>
+<form action="http://localhost:3001/db/deleteTodos/9" method="get">
+    <button type="submit">delete todos by id</button>
 </form>
 
-<form action="http://localhost:3001/db/todo" method="get">
-    <button type="submit">get all todo</button>
+<form action="http://localhost:3001/db/todos" method="get">
+    <button type="submit">get all todos</button>
 </form>
 
-<form action="http://localhost:3001/db/completedTodo" method="get">
-    <button type="submit">get completed todo</button>
-</form>
-
-<label for="">id hardcoded in file index.html</label>
-<form action="http://localhost:3001/db/todo/810" method="get">
-    <button type="submit">get single todo by id</button>
+<form action="http://localhost:3001/db/completedTodos" method="get">
+    <button type="submit">get completed todos</button>
 </form>
 
 <label for="">id hardcoded in file index.html</label>
-<form action="http://localhost:3001/db/todoByUser/2" method="get">
-    <button type="submit">get  todo by user id</button>
+<form action="http://localhost:3001/db/todos/810" method="get">
+    <button type="submit">get single todos by id</button>
+</form>
+
+<label for="">id hardcoded in file index.html</label>
+<form action="http://localhost:3001/db/todosByUser/2" method="get">
+    <button type="submit">get  todos by user id</button>
 </form>
 
 <form action="http://localhost:3001/db/users" method="get">
@@ -47,4 +47,10 @@
 <label for="">id hardcoded in file index.html</label>
 <form action="http://localhost:3001/db/users/2" method="get">
     <button type="submit">get user by id</button>
+</form>
+
+
+<label for="">text hardcoded in file index.html</label>
+<form action="http://localhost:3001/db/textTodos/Voluptatem/completedTodos" method="get">
+    <button type="submit">get todos by text</button>
 </form>
