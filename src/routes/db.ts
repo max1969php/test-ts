@@ -10,6 +10,28 @@ const fs = require('fs');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
+/* POST CREATE EXERCISE QUERY. */
+router.post('/EXERCISE', function(req, res, next) {
+  console.log(req.body.searchText);
+  console.log(req.body.completedSelector);
+  console.log(req.body.user_selected);
+  let placeholder='%'+req.body.searchText+'%';
+  let usersID=(req.body.user_selected).substring(1)
+  console.log(usersID)
+  console.log(placeholder)
+// simple query
+db.query(
+  'SELECT id,userID,title,text,completed from`todos` where `completed`>=? AND `userID`=? AND  `title` LIKE ?',
+  [req.body.completedSelector,usersID,placeholder],
+     function(err, results, fields) {
+     // console.log(results); // results contains rows returned by server
+      //console.log(fields); // fields contains extra meta data about results, if available
+  res.status(200).send({results
+  });
+    }
+  )
+});
+
 /* POST new todos. */
 router.post('/newTodos', function(req, res, next) {
 // simple query
@@ -143,7 +165,7 @@ db.query(
 });
 
 /* GET single todos by id. */
-router.get('/todos/:id', function(req, res, next) {
+router.get('/todos/:usersid', function(req, res, next) {
    // console.log(req.params.id)
 // simple query
 db.query(
