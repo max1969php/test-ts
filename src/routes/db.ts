@@ -2,34 +2,31 @@ var express = require('express');
 var router = express.Router();
 const db = require("../db/dbConfig");
 import bodyParser from 'body-parser';
-import { Users } from "./../types";
-import { Todo } from "./../types";
-const users: Users[] = [];
-const todo: Todo[] = [];
 const fs = require('fs');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 
 /* POST CREATE EXERCISE QUERY. */
-router.post('/EXERCISE', function(req, res, next) {
-  console.log(req.body.searchText);
-  console.log(req.body.completedSelector);
-  console.log(req.body.user_selected);
+router.post('/exercise', function(req, res, next) {
+  console.log('a',req.body);
+  console.log('b',req.body.completedSelector);
+  console.log('c',req.body.usersID);
   let placeholder='%'+req.body.searchText+'%';
-  let usersID=(req.body.user_selected).substring(1)
-  console.log(usersID)
-  console.log(placeholder)
+  let usersID=(JSON.parse(req.body.usersID))
+  console.log('d',usersID)
+  console.log('e',placeholder)
 // simple query
-db.query(
-  'SELECT id,userID,title,text,completed from`todos` where `completed`>=? AND `userID`=? AND  `title` LIKE ?',
+var quer=db.query(
+  'SELECT id,userID,title,text,completed from`todos` where `completed`>=? AND `userID` IN (?) AND  `title` LIKE ?',
   [req.body.completedSelector,usersID,placeholder],
      function(err, results, fields) {
-     // console.log(results); // results contains rows returned by server
+      //console.log(results); // results contains rows returned by server
       //console.log(fields); // fields contains extra meta data about results, if available
   res.status(200).send({results
   });
     }
   )
+console.log(quer.sql)
 });
 
 /* POST new todos. */
