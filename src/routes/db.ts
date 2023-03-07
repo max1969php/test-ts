@@ -12,7 +12,7 @@ router.post('/exercise', function(req, res, next) {
   console.log('b',req.body.completedSelector);
   console.log('c',req.body.usersID);
   let placeholder='%'+req.body.searchText+'%';
-  let usersID=(JSON.parse(req.body.usersID))
+  let usersID=(req.body.usersID)
   console.log('d',usersID)
   console.log('e',placeholder)
 // simple query
