@@ -17,11 +17,12 @@ router.post('/exercise', function(req, res, next) {
   console.log('e',placeholder)
 // simple query
 var quer=db.query(
-  'SELECT id,userID,title,text,completed from`todos` where `completed`>=? AND `userID` IN (?) AND  `title` LIKE ?',
+  'SELECT todos.id,todos.userID,todos.title,todos.text,todos.completed,users.name from`todos` join `users` on todos.userID = users.id where `completed`>=? AND `userID` IN (?) AND  `title` LIKE ? order by `todos.id`',
   [req.body.completedSelector,usersID,placeholder],
      function(err, results, fields) {
       //console.log(results); // results contains rows returned by server
       //console.log(fields); // fields contains extra meta data about results, if available
+
   res.status(200).send({results
   });
     }
@@ -29,6 +30,21 @@ var quer=db.query(
 console.log(quer.sql)
 });
 
+/* GET single todos by id. */
+router.get('/singleTodo/:id', function(req, res, next) {
+  // console.log(req.params.id)
+// simple query
+db.query(
+   'SELECT * FROM `todos` WHERE `id` =?',
+   [req.params.id],
+   function(err, results, fields) {
+    // console.log(results); // results contains rows returned by server
+     //console.log(fields); // fields contains extra meta data about results, if available
+ res.status(200).send({results
+ });
+   }
+ )
+});
 /* POST new todos. */
 router.post('/newTodos', function(req, res, next) {
 // simple query
@@ -104,7 +120,7 @@ db.query(
 });/* GET todos listing where there is searched text. */
 router.get('/textTodos/:text/:completed', function(req, res, next) {
 // simple query
-let placeholder='%'+req.params.text+'%';
+let placeholder="%"+req.params.text+"%";
 let completed=0
 if((req.params.completed)=='todos') {completed=0}else{completed=1}
 console.log(req.params.completed,completed)
@@ -161,20 +177,5 @@ db.query(
   )
 });
 
-/* GET single todos by id. */
-router.get('/todos/:usersid', function(req, res, next) {
-   // console.log(req.params.id)
-// simple query
-db.query(
-    'SELECT * FROM `todos` WHERE `id` =?',
-    [req.params.id],
-    function(err, results, fields) {
-     // console.log(results); // results contains rows returned by server
-      //console.log(fields); // fields contains extra meta data about results, if available
-  res.status(200).send({results
-  });
-    }
-  )
-});
 module.exports = router;
 
