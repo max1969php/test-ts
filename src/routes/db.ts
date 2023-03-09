@@ -15,9 +15,11 @@ router.post('/exercise', function(req, res, next) {
   let usersID=(req.body.usersID)
   console.log('d',usersID)
   console.log('e',placeholder)
-// simple query
+  let query='SELECT todos.id,todos.userID,todos.title,todos.text,todos.completed,users.name from`todos` join `users` on todos.userID = users.id where `completed`>=? AND `userID` IN (?) AND  `title` LIKE ? order by todos.id'
+  if(usersID=='' ||usersID=='NULL'||usersID==undefined)query='SELECT todos.id,todos.userID,todos.title,todos.text,todos.completed,users.name from`todos` join `users` on todos.userID = users.id  order by todos.id'
+  // simple query
 var quer=db.query(
-  'SELECT todos.id,todos.userID,todos.title,todos.text,todos.completed,users.name from`todos` join `users` on todos.userID = users.id where `completed`>=? AND `userID` IN (?) AND  `title` LIKE ? order by `todos.id`',
+  query,
   [req.body.completedSelector,usersID,placeholder],
      function(err, results, fields) {
       //console.log(results); // results contains rows returned by server
@@ -35,46 +37,32 @@ router.get('/singleTodo/:id', function(req, res, next) {
   // console.log(req.params.id)
 // simple query
 db.query(
-   'SELECT * FROM `todos` WHERE `id` =?',
+   'SELECT todos.id,todos.userID,todos.title,todos.text,todos.completed,users.name FROM `todos` JOIN `users` ON todos.userID = users.id WHERE todos.id =?',
    [req.params.id],
    function(err, results, fields) {
-    // console.log(results); // results contains rows returned by server
+    //console.log(results); // results contains rows returned by server
      //console.log(fields); // fields contains extra meta data about results, if available
  res.status(200).send({results
  });
    }
  )
 });
-/* POST new todos. */
-router.post('/newTodos', function(req, res, next) {
-// simple query
-db.query(
-  'INSERT INTO `todos`(userID, title, text,createdAt, updatedAt) VALUES (?,?,?, NOW(),NOW())',
-  [req.body.userID,req.body.title,req.body.text],
-     function(err, results, fields) {
-     // console.log(results); // results contains rows returned by server
-      //console.log(fields); // fields contains extra meta data about results, if available
-  res.status(200).send({results
-  });
-    }
-  )
-});
 
-/* UPDATE todos. */
+/* UPDATE todos AS TEXT AND COMPLETED FLAG. */
 router.post('/updateTodos', function(req, res, next) {
 // simple query
-db.query(
-  'UPDATE `todos` SET title=?, text=?, updatedAt=NOW() WHERE id=?',
-  [req.body.title,req.body.text,req.body.id],
+var quer=db.query(
+  'UPDATE `todos` SET text=?,completed=?, updatedAt=NOW() WHERE id=?',
+  [req.body.text,req.body.completed,req.body.id],
      function(err, results, fields) {
-     // console.log(results); // results contains rows returned by server
+     console.log(results); // results contains rows returned by server
       //console.log(fields); // fields contains extra meta data about results, if available
   res.status(200).send({results
   });
     }
   )
+  console.log(quer.sql)
 });
-
 /* DELETE todos by id. */
 router.get('/deleteTodos/:id', function(req, res, next) {
  // console.log(req.params.id)
@@ -90,6 +78,22 @@ db.query(
     }
   )
 });
+
+/* POST new todos. */
+router.post('/newTodos', function(req, res, next) {
+// simple query
+db.query(
+  'INSERT INTO `todos`(userID, title, text,createdAt, updatedAt) VALUES (?,?,?, NOW(),NOW())',
+  [req.body.userID,req.body.title,req.body.text],
+     function(err, results, fields) {
+     // console.log(results); // results contains rows returned by server
+      //console.log(fields); // fields contains extra meta data about results, if available
+  res.status(200).send({results
+  });
+    }
+  )
+});
+
 
 /* GET users listing. */
 router.get('/users', function(req, res, next) {
