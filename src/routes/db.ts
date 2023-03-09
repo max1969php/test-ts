@@ -15,12 +15,12 @@ router.post('/exercise', function(req, res, next) {
   let usersID=(req.body.usersID)
   console.log('d',usersID)
   console.log('e',placeholder)
-  let query='SELECT todos.id,todos.userID,todos.title,todos.text,todos.completed,users.name from`todos` join `users` on todos.userID = users.id where `completed`>=? AND `userID` IN (?) AND  `title` LIKE ? order by todos.id'
-  if(usersID=='' ||usersID=='NULL'||usersID==undefined)query='SELECT todos.id,todos.userID,todos.title,todos.text,todos.completed,users.name from`todos` join `users` on todos.userID = users.id  order by todos.id'
+  let query='SELECT todos.id,todos.userID,todos.title,todos.text,todos.completed,users.name from`todos` join `users` on todos.userID = users.id where `completed`>=? AND  `title` LIKE ? AND `userID` IN (?) order by todos.id'
+  if(usersID=='' ||usersID=='NULL'||usersID===undefined||usersID=='undefined')query='SELECT todos.id,todos.userID,todos.title,todos.text,todos.completed,users.name from`todos` join `users` on todos.userID = users.id where `completed`>=? AND  `title` LIKE ?  order by todos.id'
   // simple query
 var quer=db.query(
   query,
-  [req.body.completedSelector,usersID,placeholder],
+  [req.body.completedSelector,placeholder,usersID],
      function(err, results, fields) {
       //console.log(results); // results contains rows returned by server
       //console.log(fields); // fields contains extra meta data about results, if available
@@ -82,16 +82,17 @@ db.query(
 /* POST new todos. */
 router.post('/newTodos', function(req, res, next) {
 // simple query
-db.query(
+var quer=db.query(
   'INSERT INTO `todos`(userID, title, text,createdAt, updatedAt) VALUES (?,?,?, NOW(),NOW())',
   [req.body.userID,req.body.title,req.body.text],
      function(err, results, fields) {
-     // console.log(results); // results contains rows returned by server
+     console.log(results); // results contains rows returned by server
       //console.log(fields); // fields contains extra meta data about results, if available
   res.status(200).send({results
   });
     }
   )
+  console.log(quer.sql)
 });
 
 
