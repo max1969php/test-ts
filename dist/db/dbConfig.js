@@ -7,12 +7,5 @@ const connection = mysql.createConnection({
     password: '',
     database: ''
 });
-// with placeholder
-/*connection.query(
-  'SELECT * FROM `users` WHERE `name` = ? AND `age` > ?',
-  ['nax', 4],
-  function(err, results) {
-    console.log(results);
-  }
-);*/
+
 module.exports = connection;
