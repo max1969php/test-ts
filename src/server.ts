@@ -1,28 +1,20 @@
-var createError = require('http-errors');
-var cors = require('cors')
-var express = require('express');
-var path = require('path');
+const createError = require('http-errors');
+const cors = require('cors')
+const express = require('express');
+const path = require('path');
 const db = require("../src/db/dbConfig");
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const port = 3001
-
-var dbRouter = require('./routes/db')
-
-var app = express();
+const dbRouter = require('./routes/db')
+const app = express();
 
 app.use(cors())
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.get('/', function(req, res){
   res.sendFile( path.join(__dirname, '/public/html/index.html'))
